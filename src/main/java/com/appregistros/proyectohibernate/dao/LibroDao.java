@@ -1,6 +1,7 @@
 package com.appregistros.proyectohibernate.dao;
 
 import com.appregistros.proyectohibernate.database.JPAUtil;
+import com.appregistros.proyectohibernate.model.Categoria;
 import com.appregistros.proyectohibernate.model.Libro;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
@@ -9,11 +10,27 @@ import java.util.List;
 
 public class LibroDao {
 
+    private Categoria obtenerCategoria(EntityManager em, Libro libro) {
+        // Si la vista todavía no manda categoría, se usa la 1 (Electrónica)
+        Long categoriaId = (libro.getCategoria() != null && libro.getCategoria().getId() != null)
+                ? libro.getCategoria().getId()
+                : 1L;
+        Categoria categoria = em.find(Categoria.class, categoriaId);
+        if (categoria == null) {
+            throw new IllegalArgumentException("No existe la categoría con id " + categoriaId);
+        }
+        return categoria;
+    }
+
     public void guardar(Libro libro) {
         EntityManager em = JPAUtil.getEntityManager();
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
+            //Esto es lo nuevo
+            Categoria categoria = obtenerCategoria(em, libro);
+            libro.setCategoria(categoria);
+
             em.persist(libro);
             tx.commit();
         } catch (RuntimeException e) {
@@ -49,8 +66,9 @@ public class LibroDao {
         try {
             tx.begin();
             Libro libro = em.find(Libro.class, id);
-            if (libro != null) {
+            if (libro == null) {
                 tx.rollback();
+                return;
             }
             em.remove(libro);
             tx.commit();
@@ -90,7 +108,7 @@ public class LibroDao {
            // em.merge(libro);
             //Opcion 2
             Libro libroBD = em.find(Libro.class, libro.getId());
-            if (libroBD != null) {
+            if (libroBD == null) {
                 tx.rollback();
                 return false;
             }

@@ -95,7 +95,8 @@ public class LibroController {
         try {
             cargarLibros();
         } catch (RuntimeException ex) {
-            mostrarAlerta("Error de conexión", "No se pudo conectar a PostgreSQL. Verifica DB_URL, DB_USER y DB_PASSWORD.\n" + ex.getMessage());
+            ex.printStackTrace();
+            mostrarAlerta("Error de conexión", "No se pudo conectar a PostgreSQL. Verifica DB_URL, DB_USER y DB_PASSWORD.\n" + causaRaiz(ex));
         }
     }
 
@@ -123,7 +124,8 @@ public class LibroController {
         } catch (NumberFormatException e) {
             mostrarAlerta("Error de formato", "Año y precio deben ser valores numéricos válidos.");
         } catch (RuntimeException e) {
-            mostrarAlerta("Error de conexión", "No se pudo guardar el libro. Revisa PostgreSQL.\n" + e.getMessage());
+            e.printStackTrace();
+            mostrarAlerta("Error de conexión", "No se pudo guardar el libro. Revisa PostgreSQL.\n" + causaRaiz(e));
         }
     }
 
@@ -147,7 +149,8 @@ public class LibroController {
         } catch (NumberFormatException e) {
             mostrarAlerta("Error de formato", "Año y precio deben ser valores numéricos válidos.");
         } catch (RuntimeException e) {
-            mostrarAlerta("Error de conexión", "No se pudo actualizar el libro. Revisa PostgreSQL.\n" + e.getMessage());
+            e.printStackTrace();
+            mostrarAlerta("Error de conexión", "No se pudo actualizar el libro. Revisa PostgreSQL.\n" + causaRaiz(e));
         }
     }
 
@@ -164,7 +167,8 @@ public class LibroController {
             limpiarCampos();
             cargarLibros();
         } catch (RuntimeException e) {
-            mostrarAlerta("Error de conexión", "No se pudo eliminar el libro. Revisa PostgreSQL.\n" + e.getMessage());
+            e.printStackTrace();
+            mostrarAlerta("Error de conexión", "No se pudo eliminar el libro. Revisa PostgreSQL.\n" + causaRaiz(e));
         }
     }
 
@@ -217,5 +221,27 @@ public class LibroController {
         libro.setPrecio(Double.parseDouble(txtPrecio.getText().trim()));
         return libro;
 
+    }
+
+    @FXML
+    private void abrirCategorias() {
+        try {
+            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(
+                    getClass().getResource("/com/appregistros/proyectohibernate/categoria-view.fxml"));
+            javafx.stage.Stage stage = new javafx.stage.Stage();
+            stage.setTitle("Categorías");
+            stage.setScene(new javafx.scene.Scene(loader.load(), 720, 450));
+            stage.show();
+        } catch (java.io.IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private String causaRaiz(Throwable e) {
+        Throwable t = e;
+        while (t.getCause() != null) {
+            t = t.getCause();
+        }
+        return t.getClass().getSimpleName() + ": " + t.getMessage();
     }
 }

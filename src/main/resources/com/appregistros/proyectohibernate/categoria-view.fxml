@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox spacing="12.0" xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.appregistros.proyectohibernate.controller.CategoriasController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+    </padding>
+
+    <Label text="Gestión de categorías - Hibernate ORM">
+        <font>
+            <Font name="System Bold" size="18.0"/>
+        </font>
+    </Label>
+
+    <GridPane hgap="10.0" vgap="10.0">
+        <columnConstraints>
+            <ColumnConstraints minWidth="130.0" prefWidth="150.0"/>
+            <ColumnConstraints hgrow="ALWAYS" prefWidth="400.0"/>
+        </columnConstraints>
+
+        <Label text="Nombre:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+        <TextField fx:id="txtNombre" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+        <Label text="Descripción:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+        <TextField fx:id="txtDescripcion" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+    </GridPane>
+
+    <HBox spacing="10.0">
+        <Button fx:id="btnGuardar" text="Guardar categoría" onAction="#guardarCategoria"/>
+        <Button fx:id="btnModificar" text="Modificar categoría" onAction="#modificarCategoria" disable="true"/>
+        <Button fx:id="btnEliminar" text="Eliminar categoría" onAction="#eliminarCategoria" disable="true"/>
+        <Button fx:id="btnCargar" text="Cargar categorías" onAction="#cargarCategorias"/>
+        <Button fx:id="btnLimpiar" text="Limpiar campos" onAction="#limpiarCampos"/>
+    </HBox>
+
+    <Label text="Seleccione una categoría de la tabla para modificarlo o eliminarlo."/>
+
+    <TableView fx:id="tablaCategorias" prefHeight="300.0" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="colId" text="ID" prefWidth="60.0"/>
+            <TableColumn fx:id="colNombre" text="Nombre" prefWidth="200.0"/>
+            <TableColumn fx:id="colDescripcion" text="Descripción" prefWidth="420.0"/>
+        </columns>
+        <placeholder>
+            <Label text="Tabla sin contenido"/>
+        </placeholder>
+    </TableView>
+</VBox>

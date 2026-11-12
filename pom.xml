@@ -70,7 +70,7 @@
                         <id>default-cli</id>
                         <configuration>
                             <mainClass>
-                                com.appregistros.proyectohibernate/com.appregistros.proyectohibernate.HelloApplication
+                                com.appregistros.proyectohibernate.Launcher
                             </mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>

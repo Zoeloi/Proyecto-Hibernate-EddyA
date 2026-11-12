@@ -2,7 +2,7 @@ package com.appregistros.proyectohibernate.model;
 
 import jakarta.persistence.*;
 @Entity
-@Table(name = "Libros", schema = "catalogos")
+@Table(name = "libro", schema = "catalogos")
 public class Libro {
 
 
@@ -16,8 +16,11 @@ public class Libro {
         private String autor;
         @Column(name = "anio_publicacion",nullable = false)
         private int anio_publicacion;
-        @Column(name = "precio", nullable = false, precision = 10, scale = 2)
+        @Column(name = "precio", nullable = false, columnDefinition = "numeric(10,2)")
         private double precio;
+        @ManyToOne(fetch = FetchType.LAZY)
+        @JoinColumn(name = "categoria_id", nullable = false)
+        private Categoria categoria;
 
     public Libro() {
     }
@@ -68,5 +71,13 @@ public class Libro {
 
     public void setPrecio(double precio) {
         this.precio = precio;
+    }
+
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
     }
 }

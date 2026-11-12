@@ -23,11 +23,11 @@ public class JPAUtil {
     }
 
     public static String getJdbcUser() {
-        return getEnvOrDefault("DB_USER", "andresmejia");
+        return getEnvOrDefault("DB_USER", "postgres");
     }
 
     public static String getJdbcPassword() {
-        return getEnvOrDefault("DB_PASSWORD", "amejia62");
+        return getEnvOrDefault("DB_PASSWORD", "luzmia2007@");
     }
 
     public static Connection getConnection() throws SQLException {
